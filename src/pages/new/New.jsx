@@ -18,9 +18,9 @@ const New = ({ inputs, title }) => {
       if (!file) return;
       const imageName = new Date().getTime() + file.name;
       
-      console.log("i am up");
+     
       const storageRef = ref(storage, `images/${imageName}`);
-      console.log("i am down");
+      
 
       const uploadTask = uploadBytesResumable(storageRef, file);
 
