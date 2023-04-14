@@ -2,16 +2,20 @@ import "./New.scss";
 import Sidebar from "./../../components/Sidebar";
 import Navbar from "./../../components/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { serverTimestamp, setDoc, doc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { storage } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const New = ({ inputs, title }) => {
   const [file, setFile] = useState(null);
   const [data, setData] = useState();
+  const formRef = useRef(null);
+  const inputRefs = useRef(null);
+  const navigate =useNavigate()
 
   useEffect(() => {
     const uploadFile = () => {
@@ -81,7 +85,10 @@ const New = ({ inputs, title }) => {
         ...data,
         Timestamp: serverTimestamp(),
       });
-      console.log(res);
+      formRef.current.reset();
+      inputRefs.current.value = ''
+      navigate(-1)
+      console.log('ref')
     } catch (err) {
       console.log(err);
     }
@@ -106,7 +113,7 @@ const New = ({ inputs, title }) => {
             />
           </div>
           <div className="right">
-            <form onSubmit={handleAdd}>
+            <form ref={formRef} onSubmit={handleAdd}>
               <div className="formInput">
                 <label htmlFor="file">
                   Image: <DriveFolderUploadOutlinedIcon className="icon" />
@@ -123,6 +130,7 @@ const New = ({ inputs, title }) => {
                   <label>{input.label}</label>
                   <input
                     id={input.id}
+                    ref={inputRefs}
                     type={input.type}
                     placeholder={input.placeholder}
                     onChange={handleInput}
