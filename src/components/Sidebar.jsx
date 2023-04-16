@@ -1,4 +1,4 @@
-import React,{useContext} from "react";
+import React, { useContext } from "react";
 import "./Sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -12,17 +12,33 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link } from "react-router-dom";
-import { DarkModeContext } from './../context/darkModeContext';
+import { Link, Navigate } from "react-router-dom";
+import { DarkModeContext } from "./../context/darkModeContext";
+import { auth } from './../firebase';
+import { signOut } from "firebase/auth";
+
 
 const Sidebar = () => {
-  const {dispatch} = useContext(DarkModeContext)
+  const { dispatch } = useContext(DarkModeContext);
+  const handleLogout = async () => {
+    const logout = window.confirm("Confirm logout!");
+    console.log(logout);
+    if(logout){
+      signOut(auth);
+      <Navigate to='/login'/>
+      localStorage.clear()
+      
+    }else{
+      
+    }
+
+  };
   return (
     <div className="sidebar">
-      <Link to='/' style={{textDecoration :'none'}}>
-      <div className="top">
-        <span className="logo">Admin Dashboard</span>
-      </div>
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <div className="top">
+          <span className="logo">Admin Dashboard</span>
+        </div>
       </Link>
       <hr />
       <div className="center">
@@ -35,7 +51,7 @@ const Sidebar = () => {
             </li>
           </Link>
           <p className="title">LISTS</p>
-          
+
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
@@ -83,15 +99,21 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li>
+          <li onClick={handleLogout}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>
         </ul>
       </div>
       <div className="bottom">
-        <div className="colorOption" onClick={()=>dispatch({type : 'LIGHT'})}></div>
-        <div className="colorOption"  onClick={()=>dispatch({type : 'DARK'})}></div>
+        <div
+          className="colorOption"
+          onClick={() => dispatch({ type: "LIGHT" })}
+        ></div>
+        <div
+          className="colorOption"
+          onClick={() => dispatch({ type: "DARK" })}
+        ></div>
       </div>
     </div>
   );

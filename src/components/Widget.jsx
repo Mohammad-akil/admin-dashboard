@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Widget.scss";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
@@ -74,6 +74,8 @@ const Widget = ({ type }) => {
 
   const amount = 100;
   const diff = 20;
+
+ 
 
   return (
     <div className="widget">

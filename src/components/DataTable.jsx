@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { userColumns, userRows } from "../Datablesource";
 import {
   collection,
-  getDocs,
   deleteDoc,
   doc,
   onSnapshot,
@@ -14,6 +13,7 @@ import { db } from "../firebase";
 
 const DataTable = () => {
   const [data, setData] = useState(userRows);
+
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "users"), (snapshot) => {
       let list = [];
