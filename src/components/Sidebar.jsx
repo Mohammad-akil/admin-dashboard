@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./Sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -12,27 +12,39 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DarkModeContext } from "./../context/darkModeContext";
-import { auth } from './../firebase';
+import { auth } from "./../firebase";
 import { signOut } from "firebase/auth";
-
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
-  const handleLogout = async () => {
-    const logout = window.confirm("Confirm logout!");
-    console.log(logout);
-    if(logout){
-      signOut(auth);
-      <Navigate to='/login'/>
-      localStorage.clear()
-      
-    }else{
-      
-    }
+  const navigate = useNavigate();
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(!open);  
   };
+
+  const handleClose = () => {
+    setOpen(false);
+    
+  };
+  console.log(open)
+
+  const handleLogout = () => {
+    setOpen(false);
+    console.log("yes logout");
+    signOut(auth);
+    localStorage.clear();
+    navigate("login");
+  };
+
   return (
     <div className="sidebar">
       <Link to="/" style={{ textDecoration: "none" }}>
@@ -99,9 +111,25 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li onClick={handleLogout}>
+          <li onClick={handleClickOpen}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Are you sure you want to logout"}
+              </DialogTitle>
+              <DialogActions>
+                <Button onClick={handleClose} >
+                  No
+                </Button>
+                <Button onClick={handleLogout}>Yes</Button>
+              </DialogActions>
+            </Dialog>
           </li>
         </ul>
       </div>
