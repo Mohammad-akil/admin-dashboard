@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import "./Login.scss";
 import TextField from "@mui/material/TextField";
 import { auth } from "../../firebase";
@@ -36,8 +39,35 @@ const Login = () => {
           autoClose: 3000,
           pauseOnHover: false,
         });
-        setLoading(false)
+        setLoading(false);
       });
+  };
+
+  const handleCreateUser = async () => {
+    try {
+      createUserWithEmailAndPassword(auth, email, password).then(
+        (userCredential) => {
+          
+          toast.success("User Created", {
+            position: "top-right",
+            autoClose: 3000,
+            pauseOnHover: false,
+          });
+          const user = userCredential.user;
+          dispatch({ type: "SIGNIN", payload: user });
+
+          navigate("/");
+        }
+      );
+    } catch (err) {
+      console.log(error);
+      setError(true);
+      toast.error("something went wrong...", {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: false,
+      });
+    }
   };
   return (
     <div className="login">
@@ -64,9 +94,17 @@ const Login = () => {
           variant="outlined"
         />
         <Button type="submit" variant="contained">
-          {loading ? <CircularProgress  size={25} /> : "Login"}
+          {loading ? <CircularProgress size={25} /> : "Login"}
         </Button>
         {error && <span>Wrong email or password</span>}
+
+        <Button
+          onClick={handleCreateUser}
+          variant="contained"
+          color={"success"}
+        >
+          SignIn
+        </Button>
       </form>
     </div>
   );

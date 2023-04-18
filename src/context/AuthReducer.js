@@ -10,6 +10,11 @@ const AuthReducer = (state, action) => {
         currentUser: null,
       };
     }
+    case "SIGNIN": {
+      return {
+        currentUser : action.payload
+      }
+    }
     default:
       return state;
   }

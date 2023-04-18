@@ -9,12 +9,21 @@ import Tabel from "../../components/Tabel";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Home = () => {
-  toast.success("Welcome user", {
-    position: "top-right",
-    autoClose: 2000,
-    pauseOnHover: false,
-    
-  });
+  const [isMessageShown, setIsMessageShown] = useState(false);
+
+  useEffect(() => {
+    if (!isMessageShown) {
+      // Show the toast message
+      toast.success("Welcome user..", {
+        position: "top-right",
+        autoClose: 2000,
+        pauseOnHover: false,
+      });
+
+      // Set the flag to true indicating that the message has been shown
+      setIsMessageShown(true);
+    }
+  }, [isMessageShown]);
 
   return (
     <div className="home">

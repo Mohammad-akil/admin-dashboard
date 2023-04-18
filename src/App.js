@@ -5,6 +5,7 @@ import Login from "./pages/login/Login";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
+import SignIn from './pages/SignIn/SignIn'
 import { userInputs, productInputs } from "./formSource";
 import "./style/dark.scss";
 import { DarkModeContext } from "./context/darkModeContext";
@@ -31,6 +32,7 @@ const App = () => {
             }
           />
           <Route path="login" element={<Login />} />
+          <Route path="signin" element={<SignIn/>}/>
           <Route path="users">
             <Route
               index
