@@ -1,15 +1,12 @@
 import React from "react";
 import "./Chart.scss";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   AreaChart,
   Area,
-  ResponsiveContainer,
 } from "recharts";
 
 const Chart = ({title}) => {
